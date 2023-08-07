@@ -1,9 +1,24 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from './environments/environment';
+import { Weather } from './app/weather';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getWeather(city:string): Observable<Weather>{
+
+    const options = new HttpParams()
+    .set('units', 'metric')
+    .set('q', city)
+    .set('appId', environment.apiKey);
+    return this.http.get<Weather>(environment.apiURl + 'weather', { params: options });
+
+  }
 }
